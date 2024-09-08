@@ -1,6 +1,10 @@
 Readme.md
 # backend-base
+instalar dependencias
+npm install
 
-¡Hola! Este es el **Laboratorio N° 3**.
+ejecutar test
+npm run test
 
-Cambios realizados desde mi rama personal utilizando **fork** por **Cristóbal Pérez** al proyecto del profesor **Carlos Marín**.
+hacer build
+npm run build

@@ -1,31 +1,28 @@
 import express from "express";
 import { configuration } from "./config.js";
-import { operar, suma } from "./calculadora.js";
+import { esPalindromo } from "./palindromo.js";
+import { esPrimo } from "./numeros.js";
 
 const app = express();
 
 app.use(express.json());
 
 app.get("/", (req, res) => {
-  res.send(`Hola mundo al usuario ${configuration.username}`);
+  res.send(`Hola, esta api fue configurada por el usuario ${configuration.username}`);
 });
 
-app.get("/operar", (req, res) => {
-  const a = parseInt(req.query.a as string);
-  const b = parseInt(req.query.b as string);
-  const oper = req.query.oper as string;
+app.get("/key", (req, res) => {
+  res.send(`Hola, esta api contiene la siguiente api-key: ${configuration.apiKey}`);
+});
 
-  try {
-      let resultado;     
-      resultado = operar(oper, a, b);
-      if (oper === 'factorial') {
-        res.send(`Factorial solo necesita un dato y se operara solo con el dato ingresado en a. El resultado de la operación ${oper} de ${a} es ${resultado}`);
-      } else {
-        res.send(`El resultado de la operación ${oper} de ${a} y ${b} es ${resultado}`);
-      }
-  } catch (error: unknown) {
-      res.status(400).send(error instanceof Error ? error.message : "Error desconocido");
-  }
+app.get("/palindromo/:frase", (req, res) => {
+  const { frase } = req.params
+  res.send(`Hola, La frase ingresada ${esPalindromo(frase) ? "es" : "no es"} palindromo`);
+});
+
+app.get("/primo/:numero", (req, res) => {
+  const { numero } = req.params
+  res.send(`Hola, el numero ingresado ${esPrimo(+numero) ? "es" : "no es"} un numero primo`);
 });
 
 export default app;

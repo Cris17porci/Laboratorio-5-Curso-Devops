@@ -1,10 +1,16 @@
 pipeline {
     agent any
+    environment {
+        USERNAME = 'cmd'
+    }
+    options {
+        disableConcurrentBuilds()
+    }
     stages {
         stage('Build and test') {
             agent {
                 docker {
-                    image 'node:20.11.1-alpine3.19' //imagen de node que contiene npm
+                    image 'node:20.11.1-alpine3.19' 
                     reuseNode true
                 }
             }
@@ -24,11 +30,6 @@ pipeline {
                        sh 'npm run build'
                    }
                } 
-            }
-        }
-        stage('deploy'){
-            steps {
-                sh 'docker build -t backend-base:latest .'
             }
         }
     }
