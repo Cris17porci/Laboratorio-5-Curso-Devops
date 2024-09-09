@@ -42,12 +42,9 @@ pipeline {
                             reuseNode true
                         }
                     }
-                    environment {
-                        SONAR_TOKEN = credentials('token-sonar') // Verifica que 'sonar-token' esté correctamente configurado en Jenkins
-                    }
                     steps {
                         withSonarQubeEnv('sonarqube') {
-                            sh 'sonar-scanner -Dsonar.login=$SONAR_TOKEN'
+                            sh 'sonar-scanner'
                         }
                     }
                 }
