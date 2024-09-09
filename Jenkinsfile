@@ -43,7 +43,7 @@ pipeline {
                         }
                     }
                     environment {
-                        SONAR_TOKEN = credentials('sonar-token') // Verifica que 'sonar-token' esté correctamente configurado en Jenkins
+                        SONAR_TOKEN = credentials('token-sonar') // Verifica que 'sonar-token' esté correctamente configurado en Jenkins
                     }
                     steps {
                         withSonarQubeEnv('sonarqube') {
