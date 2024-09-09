@@ -32,7 +32,7 @@ pipeline {
                } 
             }
         }
-        stage('Code Quality'){
+        stage('Code Quality') {
             stages {
                 stage('SonarQube analysis') {
                     agent {
@@ -50,7 +50,7 @@ pipeline {
                 }
                 stage('Quality Gates'){
                     steps{
-                        timeout(time: 10, unit: 'SECONDS'){
+                        timeout(time: 10, unit: 'SECONDS') {
                             waitForQualityGate abortPipeline: true
                         }
                     }

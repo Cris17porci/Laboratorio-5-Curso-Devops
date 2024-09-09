@@ -1,0 +1,72 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: lab5-deployment
+  namespace: ucurso
+  labels:
+    app: lab5
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: lab5
+  template:
+    metadata:
+      labels:
+        app: lab5
+    spec:
+      containers:
+      - name: lab5
+        image: localhost:8082/lab5:latest
+        imagePullPolicy: Always
+        env:
+        - name: USERNAME
+          valueFrom:
+            configMapKeyRef:
+              name: lab5
+              key: USERNAME
+        - name: API_KEY
+          valueFrom:
+            secretKeyRef:
+              key: API_KEY
+              name: lab5
+        ports:
+        - containerPort: 3001
+      imagePullSecrets:
+      - name: regcred  
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: lab5-svc
+  namespace: ucurso
+  labels:
+    app: lab5
+spec:
+  selector:
+    app: lab5
+  ports:
+  - protocol: TCP
+    port: 80
+    targetPort: 3001
+  type: NodePort
+---
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: lab5-ingress
+  namespace: ucurso
+  annotations:
+    nginx.ingress.kubernetes.io/rewrite-target: /$2
+spec:
+  ingressClassName: nginx
+  rules:
+  - http:
+      paths:
+      - pathType: ImplementationSpecific
+        path: /lab5-path(/|$)(.*)
+        backend:
+          service:
+            name: lab5-svc
+            port:
+              number: 80
