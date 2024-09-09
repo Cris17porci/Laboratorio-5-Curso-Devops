@@ -48,6 +48,13 @@ pipeline {
                         }
                     }
                 }
+                stage('Quality Gates'){
+                    steps{
+                        timeout(time: 10, unit: 'SECONDS'){
+                            waitForQualityGate abortPipeline: true
+                        }
+                    }
+                }
             }
         }
         stage('delivery'){
