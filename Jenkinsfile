@@ -1,5 +1,8 @@
 pipeline {
     agent any
+    environment {
+        USERNAME = 'criss'
+    }
     options {
         disableConcurrentBuilds()
     }
@@ -44,10 +47,7 @@ pipeline {
         }
         stage('deploy'){
             steps {
-                script {       
-                    if (env.BRANCH_NAME == 'main') {
-                        ambiente = 'dev'
-                    }
+                script {
                     docker.withRegistry('http://localhost:8082', 'nexus-key') {
                         sh "docker compose pull"
                         sh "docker compose --env-file .env up -d --force-recreate"
